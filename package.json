@@ -1,34 +1,24 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "opencode",
-  "description": "AI-powered development tool",
+  "name": "hrm-harness",
+  "description": "Hybrid Reasoning Model (HRM) Agent Harness pairing Cloud LLMs with Local Tree-Sitter & Recurrent Validators",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.3.14",
+  "packageManager": "pnpm@11.25.0",
   "scripts": {
-    "dev": "bun run --cwd packages/opencode src/index.ts",
-    "dev:desktop": "bun --cwd packages/desktop dev",
-    "dev:web": "bun --cwd packages/app dev",
-    "dev:console": "ulimit -n 10240 2>/dev/null; bun run --cwd packages/console/app dev",
-    "dev:stats": "bun sst shell --stage=production -- bun run --cwd packages/stats/app dev",
-    "dev:storybook": "bun --cwd packages/storybook storybook",
+    "dev": "pnpm --filter @opencode-ai/cli dev",
+    "dev:opencode": "pnpm --filter opencode dev",
+    "dev:validator": "node --experimental-strip-types packages/hrm-validator/src/cli.ts start",
+    "dev:acp": "node --experimental-strip-types packages/acp-bridge/src/server.ts",
     "lint": "oxlint",
-    "typecheck": "bun turbo typecheck",
-    "upgrade-opentui": "bun run script/upgrade-opentui.ts",
-    "postinstall": "bun run --cwd packages/core fix-node-pty",
-    "prepare": "husky",
-    "random": "echo 'Random script'",
-    "sso": "aws sso login --sso-session=opencode --no-browser",
-    "translate:app": "bun run script/translate-app.ts",
-    "test": "echo 'do not run tests from root' && exit 1"
+    "typecheck": "turbo typecheck",
+    "test": "echo \"Run tests via pnpm --filter <pkg> test\" && exit 1",
+    "test:hrm": "node --experimental-strip-types --test packages/tree-sitter/test/tree-sitter.test.ts packages/hrm-validator/test/validator.test.ts packages/acp-bridge/test/acp-bridge.test.ts packages/mcp-docstuff/test/docstuff.test.ts"
   },
   "workspaces": {
     "packages": [
       "packages/*",
-      "packages/console/*",
-      "packages/stats/*",
-      "packages/sdk/js",
-      "packages/slack"
+      "packages/sdk/js"
     ],
     "catalog": {
       "@effect/opentelemetry": "4.0.0-beta.83",
@@ -53,8 +43,6 @@
       "@types/semver": "7.7.1",
       "@tsconfig/node22": "22.0.2",
       "@tsconfig/bun": "1.0.9",
-      "@cloudflare/workers-types": "4.20251008.0",
-      "@openauthjs/openauth": "0.0.0-20250322224806",
       "@pierre/diffs": "1.2.10",
       "opentui-spinner": "0.0.7",
       "@solid-primitives/storage": "4.3.3",
