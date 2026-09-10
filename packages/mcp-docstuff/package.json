@@ -1,0 +1,24 @@
+{
+  "name": "@hrm-harness/mcp-docstuff",
+  "version": "0.1.0",
+  "description": "Model Context Protocol (MCP) Server for Project Documentation and Symbol Indexing",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "bin": {
+    "mcp-docstuff": "./bin/mcp-docstuff.js"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
