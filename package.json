@@ -5,17 +5,22 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.25.0",
+  "bin": {
+    "hrm": "./bin/hrm"
+  },
   "scripts": {
-    "dev": "pnpm --filter @opencode-ai/cli dev",
-    "dev:opencode": "pnpm --filter opencode dev",
+    "hrm": "./bin/hrm",
+    "hrm:stats": "./bin/hrm stats",
+    "dev": "./bin/hrm",
+    "dev:repl": "./bin/hrm repl",
     "dev:validator": "node --experimental-strip-types packages/hrm-validator/src/cli.ts start",
     "dev:acp": "node --experimental-strip-types packages/acp-bridge/src/server.ts",
-    "models:list": "node --experimental-strip-types packages/hrm-validator/src/cli.ts models list",
-    "models:download": "node --experimental-strip-types packages/hrm-validator/src/cli.ts models download",
+    "models:list": "./bin/hrm models list",
+    "models:download": "./bin/hrm models download",
     "lint": "oxlint",
     "typecheck": "turbo typecheck",
-    "test": "echo \"Run tests via pnpm --filter <pkg> test\" && exit 1",
-    "test:hrm": "node --experimental-strip-types --test packages/tree-sitter/test/tree-sitter.test.ts packages/hrm-validator/test/validator.test.ts packages/acp-bridge/test/acp-bridge.test.ts packages/mcp-docstuff/test/docstuff.test.ts"
+    "test": "echo \"Run tests via ./run-tests.sh\" && exit 1",
+    "test:hrm": "./run-tests.sh"
   },
   "workspaces": {
     "packages": [

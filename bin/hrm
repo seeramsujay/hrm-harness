@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# HRM: Ultra-Lightweight Hybrid Reasoning Model Agent Harness
+# Enforces low-memory footprint (<128MB max heap) and native TypeScript execution.
+
+# Resolve symlinks to locate real directory
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+SELF_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+HARNESS_ROOT="$(cd "${SELF_DIR}/.." && pwd)"
+
+exec node --max-old-space-size=128 --experimental-strip-types "${HARNESS_ROOT}/packages/hrm-cli/src/index.ts" "$@"

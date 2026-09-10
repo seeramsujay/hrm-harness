@@ -1,0 +1,24 @@
+{
+  "name": "@hrm-harness/cli",
+  "version": "0.1.0",
+  "description": "Ultra-lightweight CLI and Agent Session Loop for the Hybrid Reasoning Model (HRM) Harness",
+  "type": "module",
+  "bin": {
+    "hrm": "./bin/hrm.js"
+  },
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "node --experimental-strip-types src/index.ts",
+    "test": "node --experimental-strip-types --test test/cli.test.ts"
+  },
+  "dependencies": {
+    "@hrm-harness/validator": "workspace:*",
+    "@hrm-harness/tree-sitter": "workspace:*",
+    "@hrm-harness/acp-bridge": "workspace:*",
+    "@hrm-harness/mcp-docstuff": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
