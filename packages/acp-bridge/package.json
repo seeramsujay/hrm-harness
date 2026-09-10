@@ -1,0 +1,23 @@
+{
+  "name": "@hrm-harness/acp-bridge",
+  "version": "0.1.0",
+  "description": "Agent Communication Protocol (ACP) & Antigravity PKCE Bridge for Hybrid HRM Agent Harness",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "dev": "node --loader ts-node/esm src/server.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentclientprotocol/sdk": "^0.1.0",
+    "@hrm-harness/validator": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
