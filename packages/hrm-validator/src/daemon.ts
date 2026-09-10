@@ -3,10 +3,12 @@ import * as fs from "node:fs";
 import { InvariantChecker, type CandidateFilePatch } from "./invariants.ts";
 import { TestTriageEngine } from "./triage.ts";
 import { formatMicroTokenPrompt, type StructuralDiagnostic } from "./micro-tokens.ts";
+import { HRMModelManager } from "./model-manager.ts";
+import { resolveModelSpec } from "./model-registry.ts";
 
 export interface DaemonRequest {
   id: string | number;
-  method: "ping" | "validate_patch" | "triage_tests" | "shutdown";
+  method: "ping" | "validate_patch" | "triage_tests" | "list_models" | "set_model" | "shutdown";
   params?: any;
 }
 
@@ -21,9 +23,16 @@ export class HRMValidatorDaemon {
   private server: net.Server | null = null;
   private invariantChecker = new InvariantChecker();
   private triageEngine = new TestTriageEngine();
+  private modelManager: HRMModelManager;
+  private activeModel: string;
 
-  constructor(socketPath: string = "/tmp/hrm_validator.sock") {
+  constructor(
+    socketPath: string = "/tmp/hrm_validator.sock",
+    model: string = process.env.HRM_MODEL || "hrm-text-1b"
+  ) {
     this.socketPath = socketPath;
+    this.modelManager = new HRMModelManager();
+    this.activeModel = model;
   }
 
   public async start(): Promise<void> {
@@ -82,8 +91,23 @@ export class HRMValidatorDaemon {
 
   private handleRequest(req: DaemonRequest): DaemonResponse {
     switch (req.method) {
-      case "ping":
-        return { id: req.id, result: { status: "ready", uptime: process.uptime() } };
+      case "ping": {
+        const status = this.modelManager.getModelStatus(this.activeModel);
+        return {
+          id: req.id,
+          result: {
+            status: "ready",
+            uptime: process.uptime(),
+            activeModel: {
+              id: status.spec.id,
+              name: status.spec.name,
+              repo: status.spec.repo,
+              isDownloaded: status.isDownloaded,
+              localPath: status.localPath
+            }
+          }
+        };
+      }
 
       case "validate_patch": {
         const patches: CandidateFilePatch[] = req.params?.patches || [];
@@ -94,7 +118,8 @@ export class HRMValidatorDaemon {
           result: {
             valid: diagnostics.length === 0,
             diagnostics,
-            feedback
+            feedback,
+            model: this.activeModel
           }
         };
       }
@@ -103,6 +128,34 @@ export class HRMValidatorDaemon {
         const changedFiles: string[] = req.params?.changedFiles || [];
         const plan = this.triageEngine.triageTests(changedFiles);
         return { id: req.id, result: plan };
+      }
+
+      case "list_models": {
+        const models = this.modelManager.listModels();
+        return {
+          id: req.id,
+          result: {
+            activeModel: this.activeModel,
+            models
+          }
+        };
+      }
+
+      case "set_model": {
+        const modelTarget = req.params?.model;
+        if (!modelTarget) {
+          return { id: req.id, error: "Missing required parameter 'model'" };
+        }
+        const resolved = resolveModelSpec(modelTarget);
+        this.activeModel = resolved.id;
+        const status = this.modelManager.getModelStatus(resolved);
+        return {
+          id: req.id,
+          result: {
+            activeModel: this.activeModel,
+            status
+          }
+        };
       }
 
       case "shutdown":

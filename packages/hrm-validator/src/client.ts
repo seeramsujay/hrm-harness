@@ -3,6 +3,7 @@ import type { DaemonRequest, DaemonResponse } from "./daemon.ts";
 import type { CandidateFilePatch } from "./invariants.ts";
 import type { StructuralDiagnostic } from "./micro-tokens.ts";
 import type { TestTriagePlan } from "./triage.ts";
+import type { LocalModelStatus } from "./model-manager.ts";
 
 export class HRMValidatorClient {
   private socketPath: string;
@@ -38,7 +39,17 @@ export class HRMValidatorClient {
     });
   }
 
-  public async ping(): Promise<{ status: string; uptime: number }> {
+  public async ping(): Promise<{
+    status: string;
+    uptime: number;
+    activeModel?: {
+      id: string;
+      name: string;
+      repo: string;
+      isDownloaded: boolean;
+      localPath: string;
+    };
+  }> {
     const res = await this.sendRequest({ id: Date.now(), method: "ping" });
     if (res.error) throw new Error(res.error);
     return res.result;
@@ -48,6 +59,7 @@ export class HRMValidatorClient {
     valid: boolean;
     diagnostics: StructuralDiagnostic[];
     feedback: string;
+    model?: string;
   }> {
     const res = await this.sendRequest({
       id: Date.now(),
@@ -63,6 +75,31 @@ export class HRMValidatorClient {
       id: Date.now(),
       method: "triage_tests",
       params: { changedFiles }
+    });
+    if (res.error) throw new Error(res.error);
+    return res.result;
+  }
+
+  public async listModels(): Promise<{
+    activeModel: string;
+    models: LocalModelStatus[];
+  }> {
+    const res = await this.sendRequest({
+      id: Date.now(),
+      method: "list_models"
+    });
+    if (res.error) throw new Error(res.error);
+    return res.result;
+  }
+
+  public async setModel(model: string): Promise<{
+    activeModel: string;
+    status: LocalModelStatus;
+  }> {
+    const res = await this.sendRequest({
+      id: Date.now(),
+      method: "set_model",
+      params: { model }
     });
     if (res.error) throw new Error(res.error);
     return res.result;

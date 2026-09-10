@@ -10,6 +10,8 @@
     "dev:opencode": "pnpm --filter opencode dev",
     "dev:validator": "node --experimental-strip-types packages/hrm-validator/src/cli.ts start",
     "dev:acp": "node --experimental-strip-types packages/acp-bridge/src/server.ts",
+    "models:list": "node --experimental-strip-types packages/hrm-validator/src/cli.ts models list",
+    "models:download": "node --experimental-strip-types packages/hrm-validator/src/cli.ts models download",
     "lint": "oxlint",
     "typecheck": "turbo typecheck",
     "test": "echo \"Run tests via pnpm --filter <pkg> test\" && exit 1",
