@@ -1,0 +1,25 @@
+{
+  "name": "@hrm-harness/validator",
+  "version": "0.1.0",
+  "description": "Local Hierarchical Reasoning Model (HRM) Validator Daemon and Invariant Checker",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "bin": {
+    "hrm-validator": "./bin/hrm-validator.js"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "dev": "node --loader ts-node/esm src/cli.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hrm-harness/tree-sitter": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
