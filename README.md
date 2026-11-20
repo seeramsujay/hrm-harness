@@ -1,11 +1,20 @@
-# HRM: Hybrid Reasoning Model Agent Harness
+<p align="center">
+  <img src="assets/logo.svg" alt="HRM Harness Logo" width="130" height="130" />
+</p>
 
-> **Ultra-Lightweight Developer Harness Pairing Cloud LLM Generators with Local Hierarchical Reasoning Models (HRMs) for Low-Cost, Fast, Deterministic Code Validation.**
+<h1 align="center">HRM Agent Harness</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/Node.js-v24+-green.svg)](https://nodejs.org/)
-[![Package Manager: pnpm](https://img.shields.io/badge/pnpm-v11+-orange.svg)](https://pnpm.io/)
-[![RAM Footprint: < 50MB](https://img.shields.io/badge/RAM_Footprint-<50MB-brightgreen.svg)](https://nodejs.org/)
+<p align="center">
+  <strong>Ultra-Lightweight Coding Agent Harness Pairing Cloud Generators with Local Hierarchical Reasoning Models</strong>
+</p>
+
+<p align="center">
+  <a href="https://opencode.ai"><img src="https://img.shields.io/badge/Website-opencode.ai-blue?style=flat-square" alt="Website" /></a>
+  <img src="https://img.shields.io/badge/Memory%20Peak-<50MB%20RAM-brightgreen?style=flat-square" alt="RAM" />
+  <img src="https://img.shields.io/badge/Architecture-HRM%20Latent%20Solver-purple?style=flat-square" alt="Architecture" />
+  <img src="https://img.shields.io/badge/Status-Maintained-success?style=flat-square" alt="Status" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License" />
+</p>
 
 ---
 
